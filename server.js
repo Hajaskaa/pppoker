@@ -19,8 +19,9 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
+  socket.on("hello", (arg, callback) => {
+    console.log(arg); // "world"
+    callback("vernem bele");
   });
 });
 
