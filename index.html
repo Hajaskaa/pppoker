@@ -11,18 +11,21 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="styles.css" />
+
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="chat.js" defer></script>
   </head>
   <body>
     <div id="homepage">
       <div>
         <form>
           <label for="name">Choose Name</label><br />
-          <input type="text" id="fname" name="name" /><br />
+          <input type="text" id="socketName" name="name" /><br />
+          <button class="btn btn-primary">Create room</button>
+          <div>
+            <button type="submit" class="btn btn-primary">Join room</button>
+          </div>
         </form>
-        <div>
-          <button type="submit" class="btn btn-primary">Create room</button>
-          <button type="submit" class="btn btn-primary">Join room</button>
-        </div>
       </div>
     </div>
   </body>

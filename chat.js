@@ -3,14 +3,23 @@
 const socket = io();
 
 const form = document.getElementById("form");
-const input = document.getElementById("input");
+const socketName = document.getElementById("socketName");
 const messages = document.getElementById("messages");
+// const socketName = document.getElementById("socketName");
+
+// form.addEventListener("submit", (e) => {
+//   e.preventDefault();
+//   if (input.value) {
+//     socket.emit("chat message", input.value);
+//     input.value = "";
+//   }
+// });
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (input.value) {
-    socket.emit("chat message", input.value);
-    input.value = "";
+  if (socketName.value) {
+    console.log(socketName.value);
+    socketName.value = "";
   }
 });
 
