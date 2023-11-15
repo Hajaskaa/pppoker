@@ -18,13 +18,10 @@ const messages = document.getElementById("messages");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (socketName.value) {
+    socket.emit("hello", "world", (response) => {
+      console.log(response); // "got it"
+    });
     console.log(socketName.value);
     socketName.value = "";
   }
-});
-
-socket.on("submit", (msg) => {
-  socket.emit("hello", "world", (response) => {
-    console.log(response); // "got it"
-  });
 });

@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   socket.on("hello", (arg, callback) => {
     console.log(arg); // "world"
-    callback("vernem bele");
+    callback("success 200");
   });
 });
 
