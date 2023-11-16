@@ -16,26 +16,36 @@
     <script src="chat.js" defer></script>
   </head>
   <body>
-    <div id="homepage">
+    <div id="homepage" class="visible">
       <div>
         <form id="form">
           <label for="name">Choose Name</label><br />
           <input type="text" id="socketName" name="name" /><br />
 
           <div>
-            <!-- <a href="./lobby.html"> -->
-            <button
-              onclick="window.location.href='lobby.html'"
-              type="submit"
-              class="btn btn-primary"
-            >
-              Create room
-            </button>
-            <!-- </a> -->
+            <button type="submit" class="btn btn-primary">Create room</button>
             <button type="submit" class="btn btn-primary">Join room</button>
           </div>
         </form>
       </div>
+    </div>
+
+    <div id="lobbypage" class="notvisible">
+      <p id="socketName">Asd</p>
+      <p id="socketId">ASD</p>
+
+      <div id="vote-area">
+        <button class="btn btn-primary voteBtn">1</button>
+        <button class="btn btn-primary voteBtn">2</button>
+        <button class="btn btn-primary voteBtn">3</button>
+        <button class="btn btn-primary voteBtn">5</button>
+        <button class="btn btn-primary voteBtn">8</button>
+        <button class="btn btn-primary voteBtn">13</button>
+        <button class="btn btn-primary voteBtn">?</button>
+        <button class="btn btn-primary voteBtn">💀</button>
+      </div>
+
+      <button id="form2" value="form2">Test</button>
     </div>
   </body>
 </html>

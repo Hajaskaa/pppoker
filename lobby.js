@@ -1,8 +1,8 @@
 //CLIENT SIDE
 const socket = io();
-const form2 = document.getElementById("form2");
-// const socketName = document.getElementById("socketName");
 
+// const socketName = document.getElementById("socketName");
+const form2 = document.getElementById("form2");
 form2.addEventListener("click", (e) => {
   console.log("asd");
   e.preventDefault();

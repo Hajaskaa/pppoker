@@ -9,6 +9,15 @@
   text-align: center;
   margin: 1rem;
 }
+
 #homepage div {
   margin: 1rem;
+}
+
+.visible {
+  display: block;
+}
+
+.notvisibile {
+  display: none;
 }
