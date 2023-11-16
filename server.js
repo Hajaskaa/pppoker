@@ -12,7 +12,6 @@ const server = createServer(app);
 const io = new Server(server);
 
 const socketNames = [];
-const clients = await io.allSockets();
 
 app.use(express.static(__dirname));
 
@@ -21,7 +20,13 @@ app.get("/", (req, res) => {
   res.sendFile(filePath);
 });
 
-io.on("connection", (socket) => {
+// app.get("/lobby.html", (req, res) => {
+//   const filePath = join(__dirname, "lobby.html");
+//   res.sendFile(filePath);
+// });
+
+io.on("connection", async (socket) => {
+  const clients = await io.allSockets();
   socket.on("hello", (arg, callback) => {
     socketNames.push(arg);
     console.log(arg); // "world"
@@ -29,8 +34,8 @@ io.on("connection", (socket) => {
   });
   socket.on("lobbyTestButtonAction", (arg, callback) => {
     socketNames.push(arg);
-    console.log(arg); // "world"
-    callback(socketNames, clients);
+    console.log(clients); // "world"
+    callback(socketNames);
   });
 });
 

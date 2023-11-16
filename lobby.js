@@ -1,9 +1,9 @@
 //CLIENT SIDE
-
-const lobbyTestButtonAction = document.getElementById("lobbyTestButtonAction");
+const socket = io();
+const form2 = document.getElementById("form2");
 // const socketName = document.getElementById("socketName");
 
-lobbyTestButtonAction.addEventListener("submit", (e) => {
+form2.addEventListener("click", (e) => {
   console.log("asd");
   e.preventDefault();
   socket.emit("lobbyTestButtonAction", "world", (response) => {
