@@ -11,6 +11,9 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+const socketNames = [];
+const clients = await io.allSockets();
+
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
@@ -20,8 +23,14 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   socket.on("hello", (arg, callback) => {
+    socketNames.push(arg);
     console.log(arg); // "world"
     callback("success 200");
+  });
+  socket.on("lobbyTestButtonAction", (arg, callback) => {
+    socketNames.push(arg);
+    console.log(arg); // "world"
+    callback(socketNames, clients);
   });
 });
 
