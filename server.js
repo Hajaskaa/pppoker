@@ -11,7 +11,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-const socketNames = [];
+const socketNamesAndSocketIDs = new Map()
 
 app.use(express.static(__dirname));
 
@@ -28,14 +28,18 @@ app.get("/", (req, res) => {
 io.on("connection", async (socket) => {
   const clients = await io.allSockets();
   socket.on("hello", (arg, callback) => {
-    socketNames.push(arg);
+    socketNamesAndSocketIDs.set(socket.client.id, arg)
     console.log(arg); // "world"
     callback("success 200");
   });
   socket.on("lobbyTestButtonAction", (arg, callback) => {
-    socketNames.push(arg);
     console.log(clients); // "world"
-    callback(socketNames);
+    console.log([...socketNamesAndSocketIDs.entries()]); // "world"
+    callback(socketNamesAndSocketIDs);
+  });
+  socket.on('disconnect', () => {
+    console.log("sajt");
+    socketNamesAndSocketIDs.delete(socket.client.id);
   });
 });
 
