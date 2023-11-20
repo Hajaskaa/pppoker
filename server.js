@@ -11,7 +11,8 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-const socketNamesAndSocketIDs = new Map()
+const socketNamesAndSocketIDs = new Map();
+const roomNames = [];
 
 app.use(express.static(__dirname));
 
@@ -27,18 +28,26 @@ app.get("/", (req, res) => {
 
 io.on("connection", async (socket) => {
   const clients = await io.allSockets();
-  socket.on("hello", (arg, callback) => {
-    socketNamesAndSocketIDs.set(socket.client.id, arg)
-    console.log(arg); // "world"
+  socket.on("socketCreateRoom", (arg, callback) => {
+    socketNamesAndSocketIDs.set(socket.client.id, arg);
+    console.log(arg);
+    const currentRoomName = "room" + socket.client.id;
+    socket.join(currentRoomName);
+    roomNames.push(currentRoomName);
     callback("success 200");
   });
+
   socket.on("lobbyTestButtonAction", (arg, callback) => {
-    console.log(clients); // "world"
-    console.log([...socketNamesAndSocketIDs.entries()]); // "world"
-    callback(socketNamesAndSocketIDs);
+    console.log(clients);
+    console.log("roomNames: " + roomNames);
+    console.log(
+      "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
+    );
+    io.to("room" + socket.client.id).emit("lobbyTestRoomEvent");
+    callback([...socketNamesAndSocketIDs.entries()]);
   });
-  socket.on('disconnect', () => {
-    console.log("sajt");
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
     socketNamesAndSocketIDs.delete(socket.client.id);
   });
 });

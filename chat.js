@@ -13,10 +13,9 @@ const lobbypage = document.getElementById("lobbypage");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  goToLobbyPage();
 
   if (socketName.value) {
-    socket.emit("hello", socketName.value, (response) => {
+    socket.emit("socketCreateRoom", socketName.value, (response) => {
       console.log(response); // "got it"
     });
     console.log(socketName.value);
@@ -32,11 +31,6 @@ form2.addEventListener("click", (e) => {
   });
 });
 
-function goToLobbyPage() {
-  homepage.classList.add("notvisible");
-  homepage.classList.remove("visible");
-  lobbypage.classList.add("visible");
-  lobbypage.classList.remove("notvisible");
-  lobbypage.offsetWidth;
-  homepage.offsetWidth;
-}
+socket.on("lobbyTestRoomEvent", (e) => {
+  console.log("lobbyTestRoomEvent successful. You are a literal god.");
+});
