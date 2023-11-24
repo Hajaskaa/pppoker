@@ -56,7 +56,7 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("lobbyTestButtonAction", (arg, callback) => {
-    // console.log(clients);
+    console.log(clients);
     // console.log("roomNames: " + roomNames);
     // console.log(
     //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
