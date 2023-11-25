@@ -51,7 +51,7 @@ joinRoomButton.addEventListener("click", (e) => {
   }
 });
 
-form2.addEventListener("click", (e) => {
+testButton.addEventListener("click", (e) => {
   console.log("asd");
   e.preventDefault();
   socket.emit("lobbyTestButtonAction", "world", (response) => {
