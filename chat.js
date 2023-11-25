@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 //CLIENT SIDE
 
 const socket = io();
@@ -11,6 +13,18 @@ const form2 = document.getElementById("form2");
 
 const homepage = document.getElementById("homepage");
 const lobbypage = document.getElementById("lobbypage");
+
+function changePage(pageId) {
+  // Hide all sections
+  const sections = document.querySelectorAll("section");
+  sections.forEach((section) => {
+    section.classList.remove("active");
+  });
+
+  // Show the selected section
+  const selectedSection = document.getElementById(pageId);
+  selectedSection.classList.add("active");
+}
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -30,9 +44,9 @@ joinRoomButton.addEventListener("click", (e) => {
   e.preventDefault();
   console.log(roomID.value);
   if (roomID.value) {
-    socket.emit("joinRoomButtonAction", roomID.value, (response) =>{
+    socket.emit("joinRoomButtonAction", roomID.value, (response) => {
       console.log(response);
-    })
+    });
     roomID.value = "";
   }
 });

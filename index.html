@@ -16,23 +16,25 @@
     <script src="chat.js" defer></script>
   </head>
   <body>
-    <div id="homepage" class="visible">
+    <section id="page1" class="active">
       <div>
         <form id="form">
           <label for="name">Choose Name</label><br />
           <input type="text" id="socketName" name="name" /><br />
           <label for="room">Input Room ID</label><br />
-          <input type="text" id="roomID" name="room" /><br />
+          <input type="text" id="roomID" name="room"  /><br />
 
           <div>
-            <button type="submit" class="btn btn-primary">Create room</button>
-            <button type="submit" id="joinRoom" class="btn btn-primary">Join room</button>
+            <button type="submit" class="btn btn-primary" onclick="changePage('page2')">Create room</button>
+            <button type="submit" id="joinRoom" class="btn btn-primary" onclick="changePage('page2')">
+              Join room
+            </button>
           </div>
         </form>
       </div>
-    </div>
+    </section>
 
-    <div id="lobbypage" class="notvisible">
+    <section id="page2">
       <p id="socketName">Asd</p>
       <p id="socketId">ASD</p>
 
@@ -48,6 +50,7 @@
       </div>
 
       <button id="form2" value="form2">Test</button>
-    </div>
+      <a href="#" onclick="changePage('page1')">Page 1</a>
+    <section>
   </body>
 </html>

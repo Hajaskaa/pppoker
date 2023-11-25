@@ -1,23 +1,23 @@
-#homepage {
+/* #page1 {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
+} */
 
-#homepage form {
+#page1 form {
   text-align: center;
   margin: 1rem;
 }
 
-#homepage div {
+#page1 div {
   margin: 1rem;
 }
 
-.visible {
-  display: block;
+section {
+  display: none;
 }
 
-.notvisibile {
-  display: none;
+.active {
+  display: block;
 }
