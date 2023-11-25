@@ -14,6 +14,11 @@
   margin: 1rem;
 }
 
+#page2 div {
+  text-align: center;
+  margin: 1rem;
+}
+
 section {
   display: none;
 }
