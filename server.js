@@ -15,10 +15,10 @@ const socketNamesAndSocketIDs = new Map();
 const roomNames = [];
 
 const setHeaders = function (req, res, next) {
-  res.set('macska', "cica")
-  next()
-}
-app.use(setHeaders)
+  res.set("macska", "cica");
+  next();
+};
+app.use(setHeaders);
 
 app.use(express.static(__dirname));
 
@@ -57,6 +57,14 @@ io.on("connection", async (socket) => {
     io.to("room" + socket.client.id).emit("lobbyTestRoomEvent");
     callback([...socketNamesAndSocketIDs.entries()]);
   });
+
+  socket.on("lobbyTestButtonAction", (roomIdValue, callback) => {
+    socket.join(roomIdValue);
+    callback(
+      "Sikeresen csatlakoztál a " + roomIdValue + " szobához!Zoli literal god."
+    );
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconnected");
     socketNamesAndSocketIDs.delete(socket.client.id);

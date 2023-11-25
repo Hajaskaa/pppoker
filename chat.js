@@ -24,10 +24,14 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-const joinRoomButton = document.getElementById("joinRoom")
+const joinRoomButton = document.getElementById("joinRoom");
+
 joinRoomButton.addEventListener("click", (e) => {
+  //your code comes here
   e.preventDefault();
   console.log(roomID.value);
+  console.log(response);
+  //and a bracket here probably
 });
 
 form2.addEventListener("click", (e) => {
