@@ -4,6 +4,7 @@ const socket = io();
 
 const form = document.getElementById("form");
 const socketName = document.getElementById("socketName");
+const roomID = document.getElementById("roomID");
 const messages = document.getElementById("messages");
 
 const form2 = document.getElementById("form2");
@@ -21,6 +22,12 @@ form.addEventListener("submit", (e) => {
     console.log(socketName.value);
     socketName.value = "";
   }
+});
+
+const joinRoomButton = document.getElementById("joinRoom")
+joinRoomButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log(roomID.value);
 });
 
 form2.addEventListener("click", (e) => {
