@@ -58,7 +58,7 @@ io.on("connection", async (socket) => {
     callback([...socketNamesAndSocketIDs.entries()]);
   });
 
-  socket.on("lobbyTestButtonAction", (roomIdValue, callback) => {
+  socket.on("joinRoomButtonAction", (roomIdValue, callback) => {
     socket.join(roomIdValue);
     callback(
       "Sikeresen csatlakoztál a " + roomIdValue + " szobához!Zoli literal god."

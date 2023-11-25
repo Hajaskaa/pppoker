@@ -27,11 +27,14 @@ form.addEventListener("submit", (e) => {
 const joinRoomButton = document.getElementById("joinRoom");
 
 joinRoomButton.addEventListener("click", (e) => {
-  //your code comes here
   e.preventDefault();
   console.log(roomID.value);
-  console.log(response);
-  //and a bracket here probably
+  if (roomID.value) {
+    socket.emit("joinRoomButtonAction", roomID.value, (response) =>{
+      console.log(response);
+    })
+    roomID.value = "";
+  }
 });
 
 form2.addEventListener("click", (e) => {
