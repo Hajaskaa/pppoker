@@ -54,7 +54,9 @@ io.on("connection", async (socket) => {
     // console.log(
     //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
     // );
-    io.to("room" + socket.client.id).emit("lobbyTestRoomEvent");
+    const array = Array.from(socket.rooms);
+    console.log(array[1]);
+    io.to(array[1]).emit("lobbyTestRoomEvent");
     callback([...socketNamesAndSocketIDs.entries()]);
   });
 
