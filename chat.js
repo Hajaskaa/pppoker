@@ -7,7 +7,7 @@ const socket = io();
 const form = document.getElementById("form");
 const socketName = document.getElementById("socketName");
 const roomID = document.getElementById("roomID");
-const voteForm = document.getElementById("vote-form")
+const voteForm = document.getElementById("vote-form");
 
 const form2 = document.getElementById("form2");
 
@@ -28,11 +28,12 @@ function changePage(pageId) {
   selectedSection.classList.add("active");
 }
 
-voteForm.addEventListener("submit", e => {
+voteForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  socket.emit("socketVote");
 
-  console.log(event.submitter.id);
-})
+  console.log(e.submitter.id);
+});
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -73,6 +74,21 @@ testButton.addEventListener("click", (e) => {
 
 socket.on("lobbyTestRoomEvent", (e) => {
   console.log("lobbyTestRoomEvent successful. You are a literal god.");
+});
+
+socket.on("socketVoteFromServer", (socketName) => {
+  //TO-DO loop and get the children based on socket name
+  //TO-DO make its bg blue
+  const parentElement = document.getElementById("socketsInTheRoom");
+  const allChildNodes = parentElement.childNodes;
+
+  let nodeElement = Array.from(allChildNodes).find(function (node) {
+    return node.innerText === socketName;
+  });
+
+  console.log(nodeElement.innerText);
+  console.log("socketVoteFromServer success elkapva socket oldalon");
+  //TO-DO debug Kiirja masnal is + masiknal nyomva nem irja ki
 });
 
 const socketsInTheRoomDocumentElement =

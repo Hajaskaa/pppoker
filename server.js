@@ -69,6 +69,16 @@ io.on("connection", async (socket) => {
     );
   });
 
+  socket.on("socketVote", () => {
+    const socketId = socket.id;
+    const socketName = socketNamesAndSocketIDs.get(socketId);
+    const roomName = "room" + socketId;
+
+    console.log(roomName);
+    console.log(socketName);
+    io.to(roomName).emit("socketVoteFromServer", socketName);
+  });
+
   socket.on("lobbyTestButtonAction", (arg, callback) => {
     console.log(clients);
     console.log("roomNames: " + roomsData);
