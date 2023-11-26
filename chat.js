@@ -7,11 +7,14 @@ const socket = io();
 const form = document.getElementById("form");
 const socketName = document.getElementById("socketName");
 const roomID = document.getElementById("roomID");
+const voteForm = document.getElementById("vote-form")
 
 const form2 = document.getElementById("form2");
 
 const homepage = document.getElementById("homepage");
 const lobbypage = document.getElementById("lobbypage");
+
+const buttonOne = document.getElementById("1");
 
 function changePage(pageId) {
   // Hide all sections
@@ -24,6 +27,12 @@ function changePage(pageId) {
   const selectedSection = document.getElementById(pageId);
   selectedSection.classList.add("active");
 }
+
+voteForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  console.log(event.submitter.id);
+})
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
