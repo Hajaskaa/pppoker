@@ -12,7 +12,7 @@ const server = createServer(app);
 const io = new Server(server);
 
 const socketNamesAndSocketIDs = new Map();
-const roomNames = [];
+const roomsData = {};
 
 const setHeaders = function (req, res, next) {
   res.set("macska", "cica");
@@ -37,20 +37,41 @@ app.get("/:path*", function (req, res) {
 
 io.on("connection", async (socket) => {
   const clients = await io.allSockets();
+
   socket.on("socketCreateRoom", (arg, callback) => {
-    socketNamesAndSocketIDs.set(socket.id, arg);
+    const socketName = arg;
+    socketNamesAndSocketIDs.set(socket.id, socketName);
     const currentRoomName = "room" + socket.id;
     socket.join(currentRoomName);
-    roomNames.push(currentRoomName);
+    roomsData[currentRoomName] = [socketName];
+
+    io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
 
     const link = "http://localhost:3000/" + currentRoomName;
+    console.log(roomsData);
+    callback(roomsData + " HEHEHE " + link);
+  });
 
-    callback("success 200 " + link);
+  socket.on("joinRoomButtonAction", (arg, callback) => {
+    const currentRoomName = arg.roomId;
+    const socketName = arg.socketName;
+    socket.join(currentRoomName);
+
+    roomsData[currentRoomName].push(socketName);
+    console.log("roomsData[currentRoomName]");
+    console.log(roomsData[currentRoomName]);
+    io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
+
+    callback(
+      "Sikeresen csatlakoztál a " +
+        currentRoomName +
+        " szobához!Zoli literal god."
+    );
   });
 
   socket.on("lobbyTestButtonAction", (arg, callback) => {
     console.log(clients);
-    console.log("roomNames: " + roomNames);
+    console.log("roomNames: " + roomsData);
     // console.log(
     //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
     // );
@@ -58,13 +79,6 @@ io.on("connection", async (socket) => {
     console.log(array[1]);
     io.to(array[1]).emit("lobbyTestRoomEvent");
     callback([...socketNamesAndSocketIDs.entries()]);
-  });
-
-  socket.on("joinRoomButtonAction", (roomIdValue, callback) => {
-    socket.join(roomIdValue);
-    callback(
-      "Sikeresen csatlakoztál a " + roomIdValue + " szobához!Zoli literal god."
-    );
   });
 
   socket.on("disconnect", () => {

@@ -7,7 +7,6 @@ const socket = io();
 const form = document.getElementById("form");
 const socketName = document.getElementById("socketName");
 const roomID = document.getElementById("roomID");
-const messages = document.getElementById("messages");
 
 const form2 = document.getElementById("form2");
 
@@ -42,12 +41,16 @@ const joinRoomButton = document.getElementById("joinRoom");
 
 joinRoomButton.addEventListener("click", (e) => {
   e.preventDefault();
-  console.log(roomID.value);
-  if (roomID.value) {
-    socket.emit("joinRoomButtonAction", roomID.value, (response) => {
-      console.log(response);
-    });
-    roomID.value = "";
+  console.log(roomId.value);
+  if (roomId.value) {
+    socket.emit(
+      "joinRoomButtonAction",
+      { roomId: roomId.value, socketName: socketName.value },
+      (response) => {
+        console.log(response);
+      }
+    );
+    roomId.value = "";
   }
 });
 
@@ -61,4 +64,26 @@ testButton.addEventListener("click", (e) => {
 
 socket.on("lobbyTestRoomEvent", (e) => {
   console.log("lobbyTestRoomEvent successful. You are a literal god.");
+});
+
+const socketsInTheRoomDocumentElement =
+  document.getElementById("socketsInTheRoom");
+
+socket.on("newSocketInRoom", (arg) => {
+  let child = socketsInTheRoomDocumentElement.lastElementChild;
+  while (child) {
+    socketsInTheRoomDocumentElement.removeChild(child);
+    child = socketsInTheRoomDocumentElement.lastElementChild;
+  }
+  const socketNamesInRoom = arg;
+  for (let socketName of socketNamesInRoom) {
+    console.log("socketNamesInRoom");
+    console.log(socketNamesInRoom);
+    console.log("socketName");
+    console.log(socketName);
+    const item = document.createElement("li");
+    item.textContent = socketName;
+    socketsInTheRoom.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
 });

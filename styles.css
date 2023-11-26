@@ -26,3 +26,15 @@ section {
 .active {
   display: block;
 }
+
+#socketsInTheRoom {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#socketsInTheRoom > li {
+  padding: 0.5rem 1rem;
+}
+#socketsInTheRoom > li:nth-child(odd) {
+  background: #efefef;
+}
