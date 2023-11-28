@@ -48,7 +48,6 @@ function triggerExample1() {
 }
 
 function changePage(pageId) {
-  
   // Hide all sections
   const sections = document.querySelectorAll("section");
   sections.forEach((section) => {
@@ -107,9 +106,11 @@ showVotesButton.addEventListener("click", (e) => {
 
 leaveButton.addEventListener("click", (e) => {
   e.preventDefault();
-  socket.emit("disconnectButtonAction", "", (arg) => {console.log(arg);
-  location.reload()});
-})
+  socket.emit("disconnectButtonAction", "", (arg) => {
+    console.log(arg);
+    location.reload();
+  });
+});
 
 socket.on("showVotesFromServer", (e) => {
   votes = e;
@@ -129,13 +130,22 @@ socket.on("showVotesFromServer", (e) => {
     window.scrollTo(0, document.body.scrollHeight);
   }
 
-  let numbers = votes.map(Number);
-  let sum = numbers.reduce((acc, num) => acc + num, 0);
-  let avg = sum / numbers.length;
+  console.log("votes1");
+  console.log(votes);
+  votes = votes.filter((word) => word !== "💀");
+  console.log("votes2");
+  console.log(votes);
+  if (votes.length) {
+    let numbers = votes.map(Number);
+    let sum = numbers.reduce((acc, num) => acc + num, 0);
+    let avg = sum / numbers.length;
 
-  let roundedAverage = avg % 1 !== 0 ? avg.toFixed(1) : avg;
+    let roundedAverage = avg % 1 !== 0 ? avg.toFixed(1) : avg;
 
-  average.textContent = "Average: " + roundedAverage;
+    average.textContent = "Average: " + roundedAverage;
+  } else {
+    average.textContent = "Please give meaningful votes! :)";
+  }
 });
 
 socket.on("lobbyTestRoomEvent", (e) => {
