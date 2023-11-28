@@ -15,6 +15,7 @@ const homepage = document.getElementById("homepage");
 const lobbypage = document.getElementById("lobbypage");
 
 const buttonOne = document.getElementById("1");
+const roomCodeElement = document.getElementById("roomCode");
 
 function changePage(pageId) {
   // Hide all sections
@@ -41,6 +42,7 @@ form.addEventListener("submit", (e) => {
   if (socketName.value) {
     socket.emit("socketCreateRoom", socketName.value, (response) => {
       console.log(response); // "got it"
+      roomCodeElement.textContent = "RoomID: " + response;
     });
     console.log(socketName.value);
     socketName.value = "";
@@ -57,6 +59,7 @@ joinRoomButton.addEventListener("click", (e) => {
       "joinRoomButtonAction",
       { roomId: roomId.value, socketName: socketName.value },
       (response) => {
+        roomCodeElement.textContent = "RoomID: " + response;
         console.log(response);
       }
     );
@@ -94,6 +97,10 @@ socket.on("socketVoteFromServer", (socketName) => {
 const socketsInTheRoomDocumentElement =
   document.getElementById("socketsInTheRoom");
 
+const socketsInTheRoomVoteNumbersDocumentElement = document.getElementById(
+  "socketsInTheRoomVoteNumbers"
+);
+
 socket.on("newSocketInRoom", (arg) => {
   let child = socketsInTheRoomDocumentElement.lastElementChild;
   while (child) {
@@ -102,13 +109,22 @@ socket.on("newSocketInRoom", (arg) => {
   }
   const socketNamesInRoom = arg;
   for (let socketName of socketNamesInRoom) {
-    console.log("socketNamesInRoom");
-    console.log(socketNamesInRoom);
-    console.log("socketName");
-    console.log(socketName);
     const item = document.createElement("li");
     item.textContent = socketName;
     socketsInTheRoom.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  let child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  while (child2) {
+    socketsInTheRoomVoteNumbersDocumentElement.removeChild(child2);
+    child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  }
+  for (let socketName of socketNamesInRoom) {
+    const item = document.createElement("li");
+    console.log(socketName);
+    item.textContent = "?";
+    socketsInTheRoomVoteNumbersDocumentElement.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   }
 });

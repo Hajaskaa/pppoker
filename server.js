@@ -47,9 +47,8 @@ io.on("connection", async (socket) => {
 
     io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
 
-    const link = "http://localhost:3000/" + currentRoomName;
     console.log(roomsData);
-    callback(roomsData + " HEHEHE " + link);
+    callback(currentRoomName);
   });
 
   socket.on("joinRoomButtonAction", (arg, callback) => {
@@ -62,11 +61,7 @@ io.on("connection", async (socket) => {
     console.log(roomsData[currentRoomName]);
     io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
 
-    callback(
-      "Sikeresen csatlakoztál a " +
-        currentRoomName +
-        " szobához!Zoli literal god."
-    );
+    callback(currentRoomName);
   });
 
   socket.on("socketVote", () => {
