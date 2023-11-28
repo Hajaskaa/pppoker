@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 //CLIENT SIDE
 
+//callback 1 client only, socket.on all clients in room or namespace
+
 const socket = io();
 
 const form = document.getElementById("form");
@@ -17,6 +19,16 @@ const lobbypage = document.getElementById("lobbypage");
 const buttonOne = document.getElementById("1");
 const roomCodeElement = document.getElementById("roomCode");
 
+const socketsInTheRoomDocumentElement =
+  document.getElementById("socketsInTheRoom");
+
+const socketsInTheRoomVoteNumbersDocumentElement = document.getElementById(
+  "socketsInTheRoomVoteNumbers"
+);
+
+let nameOfSocket;
+let numberOfRoom;
+
 function changePage(pageId) {
   // Hide all sections
   const sections = document.querySelectorAll("section");
@@ -31,7 +43,9 @@ function changePage(pageId) {
 
 voteForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  socket.emit("socketVote");
+  socket.emit("socketVote", (response) => {
+    console.log(response);
+  });
 
   console.log(e.submitter.id);
 });
@@ -68,11 +82,32 @@ joinRoomButton.addEventListener("click", (e) => {
 });
 
 testButton.addEventListener("click", (e) => {
-  console.log("asd");
   e.preventDefault();
   socket.emit("lobbyTestButtonAction", "world", (response) => {
     console.log(response);
   });
+});
+
+showVotesButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  socket.emit("showVotesButtonAction");
+});
+
+socket.on("showVotesFromServer", (e) => {
+  votes = [e];
+  console.log(votes);
+  let child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  while (child2) {
+    socketsInTheRoomVoteNumbersDocumentElement.removeChild(child2);
+    child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  }
+  for (let vote of votes) {
+    const item = document.createElement("li");
+    console.log(vote);
+    item.textContent = vote;
+    socketsInTheRoomVoteNumbersDocumentElement.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
 });
 
 socket.on("lobbyTestRoomEvent", (e) => {
@@ -93,13 +128,6 @@ socket.on("socketVoteFromServer", (socketName) => {
   console.log("socketVoteFromServer success elkapva socket oldalon");
   //TO-DO debug Kiirja masnal is + masiknal nyomva nem irja ki
 });
-
-const socketsInTheRoomDocumentElement =
-  document.getElementById("socketsInTheRoom");
-
-const socketsInTheRoomVoteNumbersDocumentElement = document.getElementById(
-  "socketsInTheRoomVoteNumbers"
-);
 
 socket.on("newSocketInRoom", (arg) => {
   let child = socketsInTheRoomDocumentElement.lastElementChild;

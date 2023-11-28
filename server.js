@@ -13,6 +13,7 @@ const io = new Server(server);
 
 const socketNamesAndSocketIDs = new Map();
 const roomsData = {};
+const votesData = {};
 
 const setHeaders = function (req, res, next) {
   res.set("macska", "cica");
@@ -44,6 +45,7 @@ io.on("connection", async (socket) => {
     const currentRoomName = "room" + socket.id;
     socket.join(currentRoomName);
     roomsData[currentRoomName] = [socketName];
+    votesData[currentRoomName] = ["0"];
 
     io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
 
@@ -57,6 +59,8 @@ io.on("connection", async (socket) => {
     socket.join(currentRoomName);
 
     roomsData[currentRoomName].push(socketName);
+    votesData[currentRoomName].push("0");
+
     console.log("roomsData[currentRoomName]");
     console.log(roomsData[currentRoomName]);
     io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
@@ -84,6 +88,14 @@ io.on("connection", async (socket) => {
     console.log(array[1]);
     io.to(array[1]).emit("lobbyTestRoomEvent");
     callback([...socketNamesAndSocketIDs.entries()]);
+  });
+
+  socket.on("showVotesButtonAction", () => {
+    const currentRoomName = Array.from(socket.rooms)[1];
+    io.to(currentRoomName).emit(
+      "showVotesFromServer",
+      votesData[currentRoomName]
+    );
   });
 
   socket.on("disconnect", () => {
