@@ -4,6 +4,9 @@
   align-items: center;
   height: 100vh;
 } */
+body {
+  font-family: "Roboto", sans-serif;
+}
 
 #page1 form {
   text-align: center;
@@ -25,6 +28,13 @@ section {
 
 .active {
   display: block;
+}
+
+label {
+  margin-top: 0.2rem;
+}
+input {
+  margin-bottom: 1rem;
 }
 
 #socketsInTheRoom,

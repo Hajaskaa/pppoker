@@ -37,7 +37,7 @@ app.get("/:path*", function (req, res) {
 });
 
 io.on("connection", async (socket) => {
-  const clients = await io.allSockets();
+  // const clients = await io.allSockets();
 
   socket.on("socketCreateRoom", (arg, callback) => {
     const socketName = arg;
@@ -96,27 +96,27 @@ io.on("connection", async (socket) => {
     });
   });
 
-  socket.on("lobbyTestButtonAction", (arg, callback) => {
-    console.log(clients);
-    console.log("roomNames: " + roomsData);
-    // console.log(
-    //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
-    // );
-    const array = Array.from(socket.rooms);
-    console.log(array[1]);
-    io.to(array[1]).emit("lobbyTestRoomEvent");
-    callback([...socketNamesAndSocketIDs.entries()]);
-  });
+  // socket.on("lobbyTestButtonAction", (arg, callback) => {
+  //   console.log(clients);
+  //   console.log("roomNames: " + roomsData);
+  //   // console.log(
+  //   //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
+  //   // );
+  //   const array = Array.from(socket.rooms);
+  //   console.log(array[1]);
+  //   io.to(array[1]).emit("lobbyTestRoomEvent");
+  //   callback([...socketNamesAndSocketIDs.entries()]);
+  // });
 
-  socket.on("showVotesButtonAction", (callback) => {
-    const currentRoomName = Array.from(socket.rooms)[1];
-    io.to(currentRoomName).emit(
-      "showVotesFromServer",
-      votesData[currentRoomName]
-    );
+  // socket.on("showVotesButtonAction", (callback) => {
+  //   const currentRoomName = Array.from(socket.rooms)[1];
+  //   io.to(currentRoomName).emit(
+  //     "showVotesFromServer",
+  //     votesData[currentRoomName]
+  //   );
 
-    callback(votesData[currentRoomName]);
-  });
+  //   callback(votesData[currentRoomName]);
+  // });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");

@@ -91,12 +91,12 @@ joinRoomButton.addEventListener("click", (e) => {
   }
 });
 
-testButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  socket.emit("lobbyTestButtonAction", "world", (response) => {
-    console.log(response);
-  });
-});
+// testButton.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   socket.emit("lobbyTestButtonAction", "world", (response) => {
+//     console.log(response);
+//   });
+// });
 
 showVotesButton.addEventListener("click", (e) => {
   e.preventDefault();
