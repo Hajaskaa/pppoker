@@ -108,15 +108,15 @@ io.on("connection", async (socket) => {
   //   callback([...socketNamesAndSocketIDs.entries()]);
   // });
 
-  // socket.on("showVotesButtonAction", (callback) => {
-  //   const currentRoomName = Array.from(socket.rooms)[1];
-  //   io.to(currentRoomName).emit(
-  //     "showVotesFromServer",
-  //     votesData[currentRoomName]
-  //   );
+  socket.on("showVotesButtonAction", (callback) => {
+    const currentRoomName = Array.from(socket.rooms)[1];
+    io.to(currentRoomName).emit(
+      "showVotesFromServer",
+      votesData[currentRoomName]
+    );
 
-  //   callback(votesData[currentRoomName]);
-  // });
+    callback(votesData[currentRoomName]);
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
