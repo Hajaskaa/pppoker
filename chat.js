@@ -19,6 +19,8 @@ const lobbypage = document.getElementById("lobbypage");
 const buttonOne = document.getElementById("1");
 const roomCodeElement = document.getElementById("roomCode");
 
+const leaveButton = document.getElementById("leave");
+
 const socketsInTheRoomDocumentElement =
   document.getElementById("socketsInTheRoom");
 
@@ -46,9 +48,7 @@ function triggerExample1() {
 }
 
 function changePage(pageId) {
-  if (pageId === "page1") {
-    location.reload();
-  }
+  
   // Hide all sections
   const sections = document.querySelectorAll("section");
   sections.forEach((section) => {
@@ -104,6 +104,12 @@ showVotesButton.addEventListener("click", (e) => {
     console.log(r);
   });
 });
+
+leaveButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  socket.emit("disconnectButtonAction", "", (arg) => {console.log(arg);
+  location.reload()});
+})
 
 socket.on("showVotesFromServer", (e) => {
   votes = e;
