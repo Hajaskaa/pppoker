@@ -41,15 +41,6 @@ function changePage(pageId) {
   selectedSection.classList.add("active");
 }
 
-voteForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  socket.emit("socketVote", (response) => {
-    console.log(response);
-  });
-
-  console.log(e.submitter.id);
-});
-
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -90,11 +81,15 @@ testButton.addEventListener("click", (e) => {
 
 showVotesButton.addEventListener("click", (e) => {
   e.preventDefault();
-  socket.emit("showVotesButtonAction");
+  socket.emit("showVotesButtonAction", (r) => {
+    console.log(r);
+  });
 });
 
 socket.on("showVotesFromServer", (e) => {
-  votes = [e];
+  votes = e;
+
+  console.log("votes");
   console.log(votes);
   let child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
   while (child2) {
@@ -108,25 +103,29 @@ socket.on("showVotesFromServer", (e) => {
     socketsInTheRoomVoteNumbersDocumentElement.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   }
+
+  let numbers = votes.map(Number);
+  let sum = numbers.reduce((acc, num) => acc + num, 0);
+  let avg = sum / numbers.length;
+
+  let roundedAverage = avg % 1 !== 0 ? avg.toFixed(1) : avg;
+
+  average.textContent = "Average: " + roundedAverage;
 });
 
 socket.on("lobbyTestRoomEvent", (e) => {
   console.log("lobbyTestRoomEvent successful. You are a literal god.");
 });
 
-socket.on("socketVoteFromServer", (socketName) => {
-  //TO-DO loop and get the children based on socket name
-  //TO-DO make its bg blue
-  const parentElement = document.getElementById("socketsInTheRoom");
-  const allChildNodes = parentElement.childNodes;
-
-  let nodeElement = Array.from(allChildNodes).find(function (node) {
-    return node.innerText === socketName;
+voteForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  socket.emit("socketVote", e.submitter.id, (response) => {
+    console.log(response);
   });
+});
 
-  console.log(nodeElement.innerText);
-  console.log("socketVoteFromServer success elkapva socket oldalon");
-  //TO-DO debug Kiirja masnal is + masiknal nyomva nem irja ki
+socket.on("socketVoteFromServer", (arg) => {
+  console.log(arg);
 });
 
 socket.on("newSocketInRoom", (arg) => {

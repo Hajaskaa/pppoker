@@ -57,7 +57,7 @@ io.on("connection", async (socket) => {
     const currentRoomName = arg.roomId;
     const socketName = arg.socketName;
     socket.join(currentRoomName);
-
+    //TODO APP BREAKING: VERIFY IF ROOM IS ALREADY EXISTING
     roomsData[currentRoomName].push(socketName);
     votesData[currentRoomName].push("0");
 
@@ -68,14 +68,32 @@ io.on("connection", async (socket) => {
     callback(currentRoomName);
   });
 
-  socket.on("socketVote", () => {
+  socket.on("socketVote", (vote, callback) => {
     const socketId = socket.id;
     const socketName = socketNamesAndSocketIDs.get(socketId);
-    const roomName = "room" + socketId;
+    const roomName = Array.from(socket.rooms)[1];
+    const voteValue = vote;
 
-    console.log(roomName);
-    console.log(socketName);
-    io.to(roomName).emit("socketVoteFromServer", socketName);
+    const indexOfSocket = roomsData[roomName].findIndex(
+      (socket) => socket === socketName
+    );
+    votesData[roomName].splice(indexOfSocket, 1);
+    console.log("votesData1");
+    console.log(votesData);
+    votesData[roomName].splice(indexOfSocket - 1, 0, voteValue);
+    console.log("votesData2");
+    console.log(votesData);
+
+    io.to(roomName).emit("socketVoteFromServer");
+
+    callback({
+      socketId,
+      socketName,
+      roomName,
+      voteValue,
+      indexOfSocket,
+      votesData,
+    });
   });
 
   socket.on("lobbyTestButtonAction", (arg, callback) => {
@@ -90,12 +108,14 @@ io.on("connection", async (socket) => {
     callback([...socketNamesAndSocketIDs.entries()]);
   });
 
-  socket.on("showVotesButtonAction", () => {
+  socket.on("showVotesButtonAction", (callback) => {
     const currentRoomName = Array.from(socket.rooms)[1];
     io.to(currentRoomName).emit(
       "showVotesFromServer",
       votesData[currentRoomName]
     );
+
+    callback(votesData[currentRoomName]);
   });
 
   socket.on("disconnect", () => {
