@@ -188,6 +188,8 @@ io.on("connection", async (socket) => {
         delete roomsData[roomName];
         delete votesData[roomName];
       }
+
+      io.to(roomName).emit("newSocketInRoom", roomsData[roomName]);
       console.log("socket disconnect data clear successful");
     } else {
       console.log("no name or rooms associated with the socket");
