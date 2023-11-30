@@ -104,6 +104,13 @@ showVotesButton.addEventListener("click", (e) => {
   });
 });
 
+// nextRoundButton.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   socket.emit("nextRoundButtonAction", (r) => {
+//     console.log(r);
+//   });
+// });
+
 leaveButton.addEventListener("click", (e) => {
   e.preventDefault();
   socket.emit("disconnectButtonAction", "", (arg) => {

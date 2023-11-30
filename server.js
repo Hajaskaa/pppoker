@@ -119,6 +119,18 @@ io.on("connection", async (socket) => {
     callback(votesData[currentRoomName]);
   });
 
+  // socket.on("nextRoundButtonAction", (callback) => {
+  //   const roomName = Array.from(socket.rooms)[1];
+  //   // io.to(currentRoomName).emit(
+  //   //   "showVotesFromServer",
+  //   //   votesData[currentRoomName]
+  //   // );
+  //   votesData[roomName] = votesData[roomName].map((vote) => "0");
+  //   io.to(roomName).emit("newSocketInRoom", roomsData[roomName]);
+
+  //   callback(votesData[roomName]);
+  // });
+
   socket.on("disconnectButtonAction", (arg, callback) => {
     const roomName = Array.from(socket.rooms)[1];
     const socketId = socket.id;
@@ -230,6 +242,6 @@ function findStringInObject(object, searchString) {
   return foundKey;
 }
 
-server.listen(3000, () => {
-  console.log("server running at http://localhost:3000");
+server.listen(10000, () => {
+  console.log("server running at http://localhost:10000");
 });
