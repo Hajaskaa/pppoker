@@ -10,16 +10,67 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css" />
+
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="chat.js" defer></script>
   </head>
   <body>
-    <h1>Please pick a name!</h1>
-    <form>
-      <label for="name">Chosen Name: </label><br />
-      <input type="text" id="fname" name="name" /><br />
-    </form>
-    <div>
-      <button type="submit" class="btn btn-primary">Create room</button>
-      <button type="submit" class="btn btn-primary">Join room</button>
+    <section id="page1" class="active">
+      <div>
+        <form id="form">
+          <label for="name">Choose Name</label><br />
+          <input type="text" id="socketName" name="name" /><br />
+          <label for="room">Input Room ID</label><br />
+          <input type="text" id="roomId" name="room"  /><br />
+
+          <div>
+            <button type="submit" class="btn btn-primary" onclick="changePage('page2')">Create room</button>
+            <button type="submit" id="joinRoom" class="btn btn-primary" onclick="changePage('page2')">
+              Join room
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="page2">
+      <div>
+        <div id="roomCodeWrapper">
+        <p id="roomCode"><p/>
+          <button  onclick="triggerExample1()" class="btn btn-outline-primary  btn-sm">Copy Room ID</button>
+        </div>
+        <div id="playersAndVotes">
+          <ul id="socketsInTheRoom">Players:</ul>
+          <ul id="socketsInTheRoomVoteNumbers">Votes:</ul>
+        </div>
+    
+      <div id="vote-area">
+      <form id="vote-form">
+        <button class="btn btn-primary voteBtn" id="1">1</button>
+        <button class="btn btn-primary voteBtn" id="2">2</button>
+        <button class="btn btn-primary voteBtn" id="3">3</button>
+        <button class="btn btn-primary voteBtn" id="5">5</button>
+        <button class="btn btn-primary voteBtn" id="8">8</button>
+        <button class="btn btn-primary voteBtn" id="13">13</button>
+        <button class="btn btn-primary voteBtn" id="💀">💀</button>
+      </form>
+      </div>
+
+      <!-- <button id="testButton" value="testButton" class="btn btn-secondary">Test</button> -->
+      <!-- if i delete testButton it breaks the app wtf -->
+      <button id="showVotesButton" value="showVotesButtonValue" class="btn btn-dark">Show Votes</button>
+      <a href="" onclick="changePage('page1')" class="btn btn-light" id="leave">Leave room</a>
+      <div>
+        <p id="average"></p>
+      </div>
+
+
     </div>
+    <section>
   </body>
 </html>

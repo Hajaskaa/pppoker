@@ -1,0 +1,69 @@
+/* #page1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+} */
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+#page1 form {
+  text-align: center;
+  margin: 1rem;
+}
+
+#page1 div {
+  margin: 1rem;
+}
+
+#page2 div {
+  text-align: center;
+  margin: 1rem;
+}
+
+section {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+label {
+  margin-top: 0.2rem;
+}
+input {
+  margin-bottom: 1rem;
+}
+
+#socketsInTheRoom,
+#socketsInTheRoomVoteNumbers {
+  /* flex: 2 1 auto; */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#socketsInTheRoom > li,
+#socketsInTheRoomVoteNumbers > li {
+  padding: 0.5rem 1rem;
+}
+#socketsInTheRoom > li:nth-child(odd),
+#socketsInTheRoomVoteNumbers > li:nth-child(odd) {
+  background: #efefef;
+}
+
+p {
+  padding: 0.5rem 1rem;
+}
+
+#playersAndVotes {
+  display: flex;
+  justify-content: center;
+}
+
+#roomCodeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
