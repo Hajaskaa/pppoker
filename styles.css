@@ -36,7 +36,9 @@ label {
 input {
   margin-bottom: 1rem;
 }
-input[type=text] {
+input[type="text"],
+input[type="text"]:focus {
+  outline: 0;
   background: transparent;
   border: none;
   border-bottom: 1px solid #000000;
