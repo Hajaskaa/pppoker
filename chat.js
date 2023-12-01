@@ -33,8 +33,8 @@ joinRoom.addEventListener("click", (e) => {
       "joinRoomButtonAction",
       { roomId: roomId.value, socketName: socketName.value },
       (response) => {
-        roomCodeElement.textContent = "RoomID: " + response;
-        console.log(response);
+        if (response === "-1") location.reload();
+        else roomCodeElement.textContent = "RoomID: " + response;
       }
     );
     roomId.value = "";

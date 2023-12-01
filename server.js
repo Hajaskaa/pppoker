@@ -56,22 +56,24 @@ io.on("connection", async (socket) => {
   socket.on("joinRoomButtonAction", (arg, callback) => {
     const currentRoomName = arg.roomId;
     const socketName = arg.socketName;
-    if(socketNamesAndSocketIDs.has(currentRoomName.substring(4))){
-      console.log("Room name has been found")
+    if (currentRoomName in roomsData) {
+      console.log("Room name has been found");
       socket.join(currentRoomName);
       socketNamesAndSocketIDs.set(socket.id, socketName);
 
-      //TODO APP BREAKING: VERIFY IF ROOM IS ALREADY EXISTING
       roomsData[currentRoomName].push(socketName);
       votesData[currentRoomName].push("0");
       console.log("roomsData[currentRoomName]");
       console.log(roomsData[currentRoomName]);
-      io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
+      io.to(currentRoomName).emit(
+        "newSocketInRoom",
+        roomsData[currentRoomName]
+      );
 
       callback(currentRoomName);
-    }else{
-      console.log("This room does not exist!")
-      callback(-1);
+    } else {
+      console.log("This room does not exist!");
+      callback("-1");
     }
   });
 
