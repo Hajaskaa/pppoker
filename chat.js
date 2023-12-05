@@ -17,8 +17,13 @@ form.addEventListener("submit", (e) => {
 
   if (socketName.value) {
     socket.emit("socketCreateRoom", socketName.value, (response) => {
-      console.log(response); // "got it"
-      roomCodeElement.textContent = "RoomID: " + response;
+      if (response === "error") {
+        console.log("error hehe");
+      } else {
+        changePage("page2");
+        console.log(response); // "got it"
+        roomCodeElement.textContent = "RoomID: " + response;
+      }
     });
     console.log(socketName.value);
     socketName.value = "";
@@ -28,13 +33,16 @@ form.addEventListener("submit", (e) => {
 joinRoom.addEventListener("click", (e) => {
   e.preventDefault();
   console.log(roomId.value);
-  if (roomId.value) {
+  if (roomId.value && socketName.value) {
     socket.emit(
       "joinRoomButtonAction",
       { roomId: roomId.value, socketName: socketName.value },
       (response) => {
         if (response === "-1") location.reload();
-        else roomCodeElement.textContent = "RoomID: " + response;
+        else {
+          changePage("page2");
+          roomCodeElement.textContent = "RoomID: " + response;
+        }
       }
     );
     roomId.value = "";

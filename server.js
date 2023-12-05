@@ -40,17 +40,24 @@ io.on("connection", async (socket) => {
   // const clients = await io.allSockets();
 
   socket.on("socketCreateRoom", (arg, callback) => {
-    const socketName = arg;
-    socketNamesAndSocketIDs.set(socket.id, socketName);
-    const currentRoomName = "room" + socket.id;
-    socket.join(currentRoomName);
-    roomsData[currentRoomName] = [socketName];
-    votesData[currentRoomName] = ["0"];
+    if (arg) {
+      const socketName = arg;
+      socketNamesAndSocketIDs.set(socket.id, socketName);
+      const currentRoomName = "room" + socket.id;
+      socket.join(currentRoomName);
+      roomsData[currentRoomName] = [socketName];
+      votesData[currentRoomName] = ["0"];
 
-    io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
+      io.to(currentRoomName).emit(
+        "newSocketInRoom",
+        roomsData[currentRoomName]
+      );
 
-    console.log(roomsData);
-    callback(currentRoomName);
+      console.log(roomsData);
+      callback(currentRoomName);
+    } else {
+      callback("error");
+    }
   });
 
   socket.on("joinRoomButtonAction", (arg, callback) => {
