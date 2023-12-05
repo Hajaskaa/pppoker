@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Vitalii Planning Poker</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -29,8 +29,8 @@
           <input type="text" id="roomId" name="room"  /><br />
 
           <div>
-            <button type="submit" class="btn btn-primary" onclick="changePage('page2')">Create room</button>
-            <button type="submit" id="joinRoom" class="btn btn-primary" onclick="changePage('page2')">
+            <button type="submit" class="btn btn-primary">Create room</button>
+            <button type="submit" id="joinRoom" class="btn btn-primary" >
               Join room
             </button>
           </div>
@@ -63,7 +63,9 @@
 
       <!-- <button id="testButton" value="testButton" class="btn btn-secondary">Test</button> -->
       <!-- if i delete testButton it breaks the app wtf -->
+      <!-- <button id="nextRoundButton"  class="btn btn-dark">Next Round</button> -->
       <button id="showVotesButton" value="showVotesButtonValue" class="btn btn-dark">Show Votes</button>
+
       <a href="" onclick="changePage('page1')" class="btn btn-light" id="leave">Leave room</a>
       <div>
         <p id="average"></p>

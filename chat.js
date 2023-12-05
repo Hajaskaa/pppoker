@@ -3,18 +3,90 @@
 //CLIENT SIDE
 
 //callback 1 client only, socket.on all clients in room or namespace
+//dinamyc binding - no getelement needed
 
 const socket = io();
 
-const form = document.getElementById("form");
-const socketName = document.getElementById("socketName");
-const roomID = document.getElementById("roomID");
+////////////////////////CREATE ROOM BUTTON /////////////////////////////////////////
+
+// const form = document.getElementById("form");
+// const joinRoomButton = document.getElementById("joinRoom");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (socketName.value) {
+    socket.emit("socketCreateRoom", socketName.value, (response) => {
+      if (response === "error") {
+        console.log("error hehe");
+      } else {
+        changePage("page2");
+        console.log(response); // "got it"
+        roomCodeElement.textContent = "RoomID: " + response;
+      }
+    });
+    console.log(socketName.value);
+    socketName.value = "";
+  }
+});
+
+joinRoom.addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log(roomId.value);
+  if (roomId.value && socketName.value) {
+    socket.emit(
+      "joinRoomButtonAction",
+      { roomId: roomId.value, socketName: socketName.value },
+      (response) => {
+        if (response === "-1") location.reload();
+        else {
+          changePage("page2");
+          roomCodeElement.textContent = "RoomID: " + response;
+        }
+      }
+    );
+    roomId.value = "";
+  }
+});
+
+socket.on("newSocketInRoom", (arg) => {
+  let child = socketsInTheRoomDocumentElement.lastElementChild;
+  while (child) {
+    socketsInTheRoomDocumentElement.removeChild(child);
+    child = socketsInTheRoomDocumentElement.lastElementChild;
+  }
+  const socketNamesInRoom = arg;
+  for (let socketName of socketNamesInRoom) {
+    const item = document.createElement("li");
+    item.textContent = socketName;
+    socketsInTheRoom.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  let child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  while (child2) {
+    socketsInTheRoomVoteNumbersDocumentElement.removeChild(child2);
+    child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
+  }
+  for (let socketName of socketNamesInRoom) {
+    const item = document.createElement("li");
+    console.log(socketName);
+    item.textContent = "?";
+    socketsInTheRoomVoteNumbersDocumentElement.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+
+// const socketName = document.getElementById("socketName");
+// const roomID = document.getElementById("roomID");
 const voteForm = document.getElementById("vote-form");
 
-const form2 = document.getElementById("form2");
+// const form2 = document.getElementById("form2");
 
-const homepage = document.getElementById("homepage");
-const lobbypage = document.getElementById("lobbypage");
+// const homepage = document.getElementById("homepage");
+// const lobbypage = document.getElementById("lobbypage");
 
 const buttonOne = document.getElementById("1");
 const roomCodeElement = document.getElementById("roomCode");
@@ -28,25 +100,6 @@ const socketsInTheRoomVoteNumbersDocumentElement = document.getElementById(
   "socketsInTheRoomVoteNumbers"
 );
 
-let nameOfSocket;
-let numberOfRoom;
-
-function triggerExample1() {
-  // get the container
-  const element = document.querySelector("#roomCode");
-  // Create a fake `textarea` and set the contents to the text
-  // you want to copy
-  const storage = document.createElement("textarea");
-  storage.value = element.innerHTML.split(" ")[1];
-  element.appendChild(storage);
-
-  // Copy the text in the fake `textarea` and remove the `textarea`
-  storage.select();
-  storage.setSelectionRange(0, 99999);
-  document.execCommand("copy");
-  element.removeChild(storage);
-}
-
 function changePage(pageId) {
   // Hide all sections
   const sections = document.querySelectorAll("section");
@@ -58,37 +111,6 @@ function changePage(pageId) {
   const selectedSection = document.getElementById(pageId);
   selectedSection.classList.add("active");
 }
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (socketName.value) {
-    socket.emit("socketCreateRoom", socketName.value, (response) => {
-      console.log(response); // "got it"
-      roomCodeElement.textContent = "RoomID: " + response;
-    });
-    console.log(socketName.value);
-    socketName.value = "";
-  }
-});
-
-const joinRoomButton = document.getElementById("joinRoom");
-
-joinRoomButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  console.log(roomId.value);
-  if (roomId.value) {
-    socket.emit(
-      "joinRoomButtonAction",
-      { roomId: roomId.value, socketName: socketName.value },
-      (response) => {
-        roomCodeElement.textContent = "RoomID: " + response;
-        console.log(response);
-      }
-    );
-    roomId.value = "";
-  }
-});
 
 // testButton.addEventListener("click", (e) => {
 //   e.preventDefault();
@@ -103,6 +125,13 @@ showVotesButton.addEventListener("click", (e) => {
     console.log(r);
   });
 });
+
+// nextRoundButton.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   socket.emit("nextRoundButtonAction", (r) => {
+//     console.log(r);
+//   });
+// });
 
 leaveButton.addEventListener("click", (e) => {
   e.preventDefault();
@@ -163,30 +192,19 @@ socket.on("socketVoteFromServer", (arg) => {
   console.log(arg);
 });
 
-socket.on("newSocketInRoom", (arg) => {
-  let child = socketsInTheRoomDocumentElement.lastElementChild;
-  while (child) {
-    socketsInTheRoomDocumentElement.removeChild(child);
-    child = socketsInTheRoomDocumentElement.lastElementChild;
-  }
-  const socketNamesInRoom = arg;
-  for (let socketName of socketNamesInRoom) {
-    const item = document.createElement("li");
-    item.textContent = socketName;
-    socketsInTheRoom.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  }
+////////////////////////UTILS/////////////////////
+function triggerExample1() {
+  // get the container
+  const element = document.querySelector("#roomCode");
+  // Create a fake `textarea` and set the contents to the text
+  // you want to copy
+  const storage = document.createElement("textarea");
+  storage.value = element.innerHTML.split(" ")[1];
+  element.appendChild(storage);
 
-  let child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
-  while (child2) {
-    socketsInTheRoomVoteNumbersDocumentElement.removeChild(child2);
-    child2 = socketsInTheRoomVoteNumbersDocumentElement.lastElementChild;
-  }
-  for (let socketName of socketNamesInRoom) {
-    const item = document.createElement("li");
-    console.log(socketName);
-    item.textContent = "?";
-    socketsInTheRoomVoteNumbersDocumentElement.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  }
-});
+  // Copy the text in the fake `textarea` and remove the `textarea`
+  storage.select();
+  storage.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  element.removeChild(storage);
+}

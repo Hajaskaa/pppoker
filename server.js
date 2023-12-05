@@ -40,33 +40,48 @@ io.on("connection", async (socket) => {
   // const clients = await io.allSockets();
 
   socket.on("socketCreateRoom", (arg, callback) => {
-    const socketName = arg;
-    socketNamesAndSocketIDs.set(socket.id, socketName);
-    const currentRoomName = "room" + socket.id;
-    socket.join(currentRoomName);
-    roomsData[currentRoomName] = [socketName];
-    votesData[currentRoomName] = ["0"];
+    if (arg) {
+      const socketName = arg;
+      socketNamesAndSocketIDs.set(socket.id, socketName);
+      const currentRoomName = "room" + socket.id;
+      socket.join(currentRoomName);
+      roomsData[currentRoomName] = [socketName];
+      votesData[currentRoomName] = ["0"];
 
-    io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
+      io.to(currentRoomName).emit(
+        "newSocketInRoom",
+        roomsData[currentRoomName]
+      );
 
-    console.log(roomsData);
-    callback(currentRoomName);
+      console.log(roomsData);
+      callback(currentRoomName);
+    } else {
+      callback("error");
+    }
   });
 
   socket.on("joinRoomButtonAction", (arg, callback) => {
     const currentRoomName = arg.roomId;
     const socketName = arg.socketName;
-    socket.join(currentRoomName);
-    socketNamesAndSocketIDs.set(socket.id, socketName);
-    //TODO APP BREAKING: VERIFY IF ROOM IS ALREADY EXISTING
-    roomsData[currentRoomName].push(socketName);
-    votesData[currentRoomName].push("0");
+    if (currentRoomName in roomsData) {
+      console.log("Room name has been found");
+      socket.join(currentRoomName);
+      socketNamesAndSocketIDs.set(socket.id, socketName);
 
-    console.log("roomsData[currentRoomName]");
-    console.log(roomsData[currentRoomName]);
-    io.to(currentRoomName).emit("newSocketInRoom", roomsData[currentRoomName]);
+      roomsData[currentRoomName].push(socketName);
+      votesData[currentRoomName].push("0");
+      console.log("roomsData[currentRoomName]");
+      console.log(roomsData[currentRoomName]);
+      io.to(currentRoomName).emit(
+        "newSocketInRoom",
+        roomsData[currentRoomName]
+      );
 
-    callback(currentRoomName);
+      callback(currentRoomName);
+    } else {
+      console.log("This room does not exist!");
+      callback("-1");
+    }
   });
 
   socket.on("socketVote", (vote, callback) => {
@@ -118,6 +133,18 @@ io.on("connection", async (socket) => {
 
     callback(votesData[currentRoomName]);
   });
+
+  // socket.on("nextRoundButtonAction", (callback) => {
+  //   const roomName = Array.from(socket.rooms)[1];
+  //   // io.to(currentRoomName).emit(
+  //   //   "showVotesFromServer",
+  //   //   votesData[currentRoomName]
+  //   // );
+  //   votesData[roomName] = votesData[roomName].map((vote) => "0");
+  //   io.to(roomName).emit("newSocketInRoom", roomsData[roomName]);
+
+  //   callback(votesData[roomName]);
+  // });
 
   socket.on("disconnectButtonAction", (arg, callback) => {
     const roomName = Array.from(socket.rooms)[1];
@@ -230,6 +257,6 @@ function findStringInObject(object, searchString) {
   return foundKey;
 }
 
-server.listen(3000, () => {
-  console.log("server running at http://localhost:3000");
+server.listen(10000, () => {
+  console.log("server running at http://localhost:10000");
 });
