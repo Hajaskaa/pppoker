@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="./styles/styles.css" />
 
     <script src="../socket.io/socket.io.js" defer></script>
-    <script src="./scripts/chat.js" defer></script>
+    <script type="module" src="./scripts/chat.js" defer></script>
   </head>
   <body>
     <section id="page1" class="active">
@@ -29,7 +29,7 @@
           <input type="text" id="roomId" name="room"  /><br />
 
           <div>
-            <button type="submit" class="btn btn-primary">Create room</button>
+            <button type="submit" id="createRoomElement" class="btn btn-primary">Create room</button>
             <button type="submit" id="joinRoom" class="btn btn-primary" >
               Join room
             </button>
@@ -41,7 +41,7 @@
     <section id="page2">
       <div>
         <div id="roomCodeWrapper">
-        <p id="roomCode"><p/>
+        <p id="roomCodeElement"><p/>
           <button  onclick="triggerExample1()" class="btn btn-outline-primary  btn-sm">Copy Room ID</button>
         </div>
         <div id="playersAndVotes">

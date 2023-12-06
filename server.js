@@ -4,6 +4,7 @@ import { dirname, join } from "path";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import * as path from "path";
+import createRoomHandler from "./src/handlers/createRoom.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,10 +12,6 @@ const __dirname = dirname(__filename);
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-
-const socketNamesAndSocketIDs = new Map();
-const roomsData = {};
-const votesData = {};
 
 // const setHeaders = function (req, res, next) {
 //   res.set("macska", "cica");
@@ -54,29 +51,19 @@ app.get("/", (req, res) => {
 //       return "application/octet-stream"; // Default MIME type for binary files
 //   }
 // }
+const socketNamesAndSocketIDs = new Map();
+const roomsData = {};
+const votesData = {};
 
 io.on("connection", async (socket) => {
-  socket.on("socketCreateRoom", (arg, callback) => {
-    if (arg) {
-      const socketName = arg;
-      socketNamesAndSocketIDs.set(socket.id, socketName);
-      const currentRoomName = "room" + socket.id;
-      socket.join(currentRoomName);
-      roomsData[currentRoomName] = [socketName];
-      votesData[currentRoomName] = ["0"];
+  const sharedData = {
+    socketId: socket.id,
+    socketNamesAndSocketIDs: socketNamesAndSocketIDs,
+    roomsData: roomsData,
+    votesData: votesData,
+  };
 
-      io.to(currentRoomName).emit(
-        "newSocketInRoom",
-        roomsData[currentRoomName]
-      );
-
-      console.log(roomsData);
-      callback(currentRoomName);
-    } else {
-      callback("error");
-    }
-  });
-
+  createRoomHandler(io, socket, sharedData);
   socket.on("joinRoomButtonAction", (arg, callback) => {
     const currentRoomName = arg.roomId;
     const socketName = arg.socketName;

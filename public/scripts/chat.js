@@ -1,3 +1,5 @@
+import { setupEventListeners } from "./eventListeners.js";
+
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 //CLIENT SIDE
@@ -11,6 +13,8 @@ const socket = io();
 
 // const form = document.getElementById("form");
 // const joinRoomButton = document.getElementById("joinRoom");
+
+setupEventListeners(socket, form, socketName, roomCodeElement);
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -89,7 +93,6 @@ const voteForm = document.getElementById("vote-form");
 // const lobbypage = document.getElementById("lobbypage");
 
 const buttonOne = document.getElementById("1");
-const roomCodeElement = document.getElementById("roomCode");
 
 const leaveButton = document.getElementById("leave");
 
@@ -112,6 +115,7 @@ function changePage(pageId) {
   selectedSection.classList.add("active");
 }
 
+export { changePage };
 // testButton.addEventListener("click", (e) => {
 //   e.preventDefault();
 //   socket.emit("lobbyTestButtonAction", "world", (response) => {
@@ -142,7 +146,7 @@ leaveButton.addEventListener("click", (e) => {
 });
 
 socket.on("showVotesFromServer", (e) => {
-  votes = e;
+  let votes = e;
 
   console.log("votes");
   console.log(votes);
