@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import * as path from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,30 +16,46 @@ const socketNamesAndSocketIDs = new Map();
 const roomsData = {};
 const votesData = {};
 
-const setHeaders = function (req, res, next) {
-  res.set("macska", "cica");
-  next();
-};
-app.use(setHeaders);
+// const setHeaders = function (req, res, next) {
+//   res.set("macska", "cica");
+//   next();
+// };
+// app.use(setHeaders);
 
-app.use(express.static(__dirname));
+// app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  const filePath = join(__dirname, "index.html");
+  const filePath = join(__dirname, "public", "index.html");
+  // const mimeType = getMimeType(filePath);
+  // res.setHeader("Content-Type", mimeType);
   res.sendFile(filePath);
 });
 
-app.get("/:path*", function (req, res) {
-  const filePath = join(__dirname, "index.html");
-  res.sendFile(filePath);
-  // console.log("ez az egyik: " + req.params.path);
-  //console.log("sonka: ");
-  //console.log(req);
-});
+// app.get("/:path*", function (req, res) {
+//   const filePath = join(__dirname, "public", "index.html");
+
+//   res.sendFile(filePath);
+// });
+
+// function getMimeType(filePath) {
+//   const extname = path.extname(filePath).toLowerCase();
+//   switch (extname) {
+//     case ".html":
+//       return "text/html";
+//     case ".css":
+//       return "text/css";
+//     case ".js":
+//       return "application/javascript";
+//     case ".json":
+//       return "application/json";
+//     // Add more cases as needed
+//     default:
+//       return "application/octet-stream"; // Default MIME type for binary files
+//   }
+// }
 
 io.on("connection", async (socket) => {
-  // const clients = await io.allSockets();
-
   socket.on("socketCreateRoom", (arg, callback) => {
     if (arg) {
       const socketName = arg;
