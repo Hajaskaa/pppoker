@@ -5,6 +5,9 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import * as path from "path";
 import createRoomHandler from "./src/handlers/createRoom.js";
+import joinRoomHandler from "./src/handlers/joinRoom.js";
+import voteSocketHandler from "./src/handlers/voteSocket.js";
+import showVotesHandler from "./src/handlers/showVotes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -64,91 +67,9 @@ io.on("connection", async (socket) => {
   };
 
   createRoomHandler(io, socket, sharedData);
-  socket.on("joinRoomButtonAction", (arg, callback) => {
-    const currentRoomName = arg.roomId;
-    const socketName = arg.socketName;
-    if (currentRoomName in roomsData) {
-      console.log("Room name has been found");
-      socket.join(currentRoomName);
-      socketNamesAndSocketIDs.set(socket.id, socketName);
-
-      roomsData[currentRoomName].push(socketName);
-      votesData[currentRoomName].push("0");
-      console.log("roomsData[currentRoomName]");
-      console.log(roomsData[currentRoomName]);
-      io.to(currentRoomName).emit(
-        "newSocketInRoom",
-        roomsData[currentRoomName]
-      );
-
-      callback(currentRoomName);
-    } else {
-      console.log("This room does not exist!");
-      callback("-1");
-    }
-  });
-
-  socket.on("socketVote", (vote, callback) => {
-    const socketId = socket.id;
-    const socketName = socketNamesAndSocketIDs.get(socketId);
-    const roomName = Array.from(socket.rooms)[1];
-    const voteValue = vote;
-
-    const indexOfSocket = roomsData[roomName].findIndex(
-      (socket) => socket === socketName
-    );
-    votesData[roomName].splice(indexOfSocket, 1);
-    console.log("votesData1");
-    console.log(votesData);
-    votesData[roomName].splice(indexOfSocket, 0, voteValue);
-    console.log("votesData2");
-    console.log(votesData);
-
-    io.to(roomName).emit("socketVoteFromServer");
-
-    callback({
-      socketId,
-      socketName,
-      roomName,
-      voteValue,
-      indexOfSocket,
-      votesData,
-    });
-  });
-
-  // socket.on("lobbyTestButtonAction", (arg, callback) => {
-  //   console.log(clients);
-  //   console.log("roomNames: " + roomsData);
-  //   // console.log(
-  //   //   "socketNamesAndSocketIDs: " + [...socketNamesAndSocketIDs.entries()]
-  //   // );
-  //   const array = Array.from(socket.rooms);
-  //   console.log(array[1]);
-  //   io.to(array[1]).emit("lobbyTestRoomEvent");
-  //   callback([...socketNamesAndSocketIDs.entries()]);
-  // });
-
-  socket.on("showVotesButtonAction", (callback) => {
-    const currentRoomName = Array.from(socket.rooms)[1];
-    io.to(currentRoomName).emit(
-      "showVotesFromServer",
-      votesData[currentRoomName]
-    );
-
-    callback(votesData[currentRoomName]);
-  });
-
-  // socket.on("nextRoundButtonAction", (callback) => {
-  //   const roomName = Array.from(socket.rooms)[1];
-  //   // io.to(currentRoomName).emit(
-  //   //   "showVotesFromServer",
-  //   //   votesData[currentRoomName]
-  //   // );
-  //   votesData[roomName] = votesData[roomName].map((vote) => "0");
-  //   io.to(roomName).emit("newSocketInRoom", roomsData[roomName]);
-
-  //   callback(votesData[roomName]);
-  // });
+  joinRoomHandler(io, socket, sharedData);
+  voteSocketHandler(io, socket, sharedData);
+  showVotesHandler(io, socket, sharedData);
 
   socket.on("disconnectButtonAction", (arg, callback) => {
     const roomName = Array.from(socket.rooms)[1];
