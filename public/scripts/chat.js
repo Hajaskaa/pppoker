@@ -197,18 +197,35 @@ socket.on("socketVoteFromServer", (arg) => {
 });
 
 ////////////////////////UTILS/////////////////////
-function triggerExample1() {
+// function triggerExample1() {
+//   // get the container
+//   const element = document.querySelector("#roomCode");
+//   // Create a fake `textarea` and set the contents to the text
+//   // you want to copy
+//   const storage = document.createElement("textarea");
+//   storage.value = element.innerHTML.split(" ")[1];
+//   element.appendChild(storage);
+
+//   // Copy the text in the fake `textarea` and remove the `textarea`
+//   storage.select();
+//   storage.setSelectionRange(0, 99999);
+//   document.execCommand("copy");
+//   element.removeChild(storage);
+// }
+
+copyRoomIdElement.addEventListener("click", (e) => {
+  e.preventDefault();
   // get the container
-  const element = document.querySelector("#roomCode");
+  // const roomCodeElement = document.querySelector("#roomCode");
   // Create a fake `textarea` and set the contents to the text
   // you want to copy
   const storage = document.createElement("textarea");
-  storage.value = element.innerHTML.split(" ")[1];
-  element.appendChild(storage);
+  storage.value = roomCodeElement.innerHTML.split(" ")[1];
+  roomCodeElement.appendChild(storage);
 
   // Copy the text in the fake `textarea` and remove the `textarea`
   storage.select();
   storage.setSelectionRange(0, 99999);
   document.execCommand("copy");
-  element.removeChild(storage);
-}
+  roomCodeElement.removeChild(storage);
+});

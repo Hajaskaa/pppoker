@@ -1,4 +1,4 @@
-const createRoomHandler = (io, socket, data) => {
+export default function createRoomHandler(io, socket, data) {
   socket.on("socketCreateRoom", (arg, callback) => {
     if (arg) {
       const socketName = arg;
@@ -19,6 +19,4 @@ const createRoomHandler = (io, socket, data) => {
       callback("error");
     }
   });
-};
-
-export default createRoomHandler;
+}
