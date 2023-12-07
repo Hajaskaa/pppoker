@@ -45,19 +45,19 @@ input[type="text"]:focus {
   border-bottom: 1px solid #000000;
 }
 
-#socketsInTheRoom,
-#socketsInTheRoomVoteNumbers {
+#socketsInTheRoomElement,
+#socketsInTheRoomVoteNumbersElement {
   /* flex: 2 1 auto; */
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-#socketsInTheRoom > li,
-#socketsInTheRoomVoteNumbers > li {
+#socketsInTheRoomElement > li,
+#socketsInTheRoomVoteNumbersElement > li {
   padding: 0.5rem 1rem;
 }
-#socketsInTheRoom > li:nth-child(odd),
-#socketsInTheRoomVoteNumbers > li:nth-child(odd) {
+#socketsInTheRoomElement > li:nth-child(odd),
+#socketsInTheRoomVoteNumbersElement > li:nth-child(odd) {
   background: #efefef;
 }
 
