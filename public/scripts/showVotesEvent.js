@@ -9,7 +9,7 @@ export function showVotesEvent(
     socket.emit("showVotesButtonAction", () => {});
   });
 
-  socket.on("showVotesFromServer", (e) => {
+  socket.on("updateVoteList", (e) => {
     let votes = e;
 
     let child2 = socketsInTheRoomVoteNumbersElement.lastElementChild;

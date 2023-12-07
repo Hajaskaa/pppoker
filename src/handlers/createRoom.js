@@ -8,8 +8,10 @@ export default function createRoomHandler(io, socket, data) {
       data.roomsData[currentRoomName] = [socketName];
       data.votesData[currentRoomName] = ["0"];
 
+      data.roomCatalog[currentRoomName] = [data.socketId];
+
       io.to(currentRoomName).emit(
-        "newSocketInRoom",
+        "updatePlayerList",
         data.roomsData[currentRoomName]
       );
 

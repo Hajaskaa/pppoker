@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, { connectionStateRecovery: {} });
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -29,12 +29,16 @@ const socketNamesAndSocketIDs = new Map();
 const roomsData = {};
 const votesData = {};
 
+const roomCatalog = {};
+
 io.on("connection", async (socket) => {
+  console.log(socket.id + " joined the server.");
   const sharedData = {
     socketId: socket.id,
     socketNamesAndSocketIDs: socketNamesAndSocketIDs,
     roomsData: roomsData,
     votesData: votesData,
+    roomCatalog,
   };
 
   createRoomHandler(io, socket, sharedData);

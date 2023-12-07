@@ -44,7 +44,7 @@ export function createAndJoinRoomEvent(
     }
   });
 
-  socket.on("newSocketInRoom", (arg) => {
+  socket.on("updatePlayerList", (arg) => {
     let child = socketsInTheRoomElement.lastElementChild;
     while (child) {
       socketsInTheRoomElement.removeChild(child);

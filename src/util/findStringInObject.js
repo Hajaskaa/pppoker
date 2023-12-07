@@ -1,5 +1,5 @@
 // Function to find a string in the object of arrays and return the property name
-export function findStringInObject(object, searchString) {
+export function findStringInObjectOfArrays(object, searchString) {
   let foundKey = null;
 
   // Iterate through the keys (property names) of the object
