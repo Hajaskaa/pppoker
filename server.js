@@ -10,6 +10,7 @@ import voteSocketHandler from "./src/handlers/voteSocket.js";
 import showVotesHandler from "./src/handlers/showVotes.js";
 import leaveRoomHandler from "./src/handlers/leaveRoom.js";
 import disconnectSocketHandler from "./src/handlers/disconnectSocket.js";
+import nextRoundHandler from "./src/handlers/nextRound.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,6 +49,7 @@ io.on("connection", async (socket) => {
   showVotesHandler(io, socket, sharedData);
   leaveRoomHandler(io, socket, sharedData);
   disconnectSocketHandler(io, socket, sharedData);
+  nextRoundHandler(io, socket, sharedData);
 });
 
 server.listen(10000, () => {

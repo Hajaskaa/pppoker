@@ -4,6 +4,7 @@ import { copyRoomIdEvent } from "./util.js";
 import { showVotesEvent } from "./showVotesEvent.js";
 import { leaveRoomEvent } from "./leaveRoomEvent.js";
 import setDefaultPage from "./setDefaultPage.js";
+import nextRoundEvent from "./nextRoundEvent.js";
 
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -14,6 +15,7 @@ import setDefaultPage from "./setDefaultPage.js";
 
 const socket = io();
 setDefaultPage(socket);
+nextRoundEvent(socket, nextRoundButton);
 
 createAndJoinRoomEvent(
   socket,
