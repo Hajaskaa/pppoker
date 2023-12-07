@@ -18,44 +18,13 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-// const setHeaders = function (req, res, next) {
-//   res.set("macska", "cica");
-//   next();
-// };
-// app.use(setHeaders);
-
-// app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   const filePath = join(__dirname, "public", "index.html");
-  // const mimeType = getMimeType(filePath);
-  // res.setHeader("Content-Type", mimeType);
   res.sendFile(filePath);
 });
 
-// app.get("/:path*", function (req, res) {
-//   const filePath = join(__dirname, "public", "index.html");
-
-//   res.sendFile(filePath);
-// });
-
-// function getMimeType(filePath) {
-//   const extname = path.extname(filePath).toLowerCase();
-//   switch (extname) {
-//     case ".html":
-//       return "text/html";
-//     case ".css":
-//       return "text/css";
-//     case ".js":
-//       return "application/javascript";
-//     case ".json":
-//       return "application/json";
-//     // Add more cases as needed
-//     default:
-//       return "application/octet-stream"; // Default MIME type for binary files
-//   }
-// }
 const socketNamesAndSocketIDs = new Map();
 const roomsData = {};
 const votesData = {};

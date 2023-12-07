@@ -13,7 +13,6 @@ export default function createRoomHandler(io, socket, data) {
         data.roomsData[currentRoomName]
       );
 
-      console.log(data.roomsData);
       callback(currentRoomName);
     } else {
       callback("error");

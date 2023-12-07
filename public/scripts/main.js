@@ -2,6 +2,7 @@ import { createAndJoinRoomEvent } from "./createAndJoinRoomEvent.js";
 import { voteSocketEvent } from "./voteSocketEvent.js";
 import { copyRoomIdEvent } from "./util.js";
 import { showVotesEvent } from "./showVotesEvent.js";
+import { leaveRoomEvent } from "./leaveRoomEvent.js";
 
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -33,3 +34,5 @@ showVotesEvent(
 );
 
 copyRoomIdEvent(copyRoomIdElement, roomCodeElement);
+
+leaveRoomEvent(socket, leaveRoomButton);

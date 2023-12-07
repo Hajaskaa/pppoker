@@ -10,11 +10,7 @@ export default function voteSocketHandler(io, socket, data) {
       (socket) => socket === socketName
     );
     votesData[roomName].splice(indexOfSocket, 1);
-    console.log("votesData1");
-    console.log(votesData);
     votesData[roomName].splice(indexOfSocket, 0, voteValue);
-    console.log("votesData2");
-    console.log(votesData);
 
     io.to(roomName).emit("socketVoteFromServer");
 

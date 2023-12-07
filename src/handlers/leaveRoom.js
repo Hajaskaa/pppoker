@@ -4,10 +4,6 @@ export default function leaveRoomHandler(io, socket, data) {
     const roomName = Array.from(socket.rooms)[1];
     const socketId = socket.id;
     const socketName = socketNamesAndSocketIDs.get(socketId);
-    console.log("roomsData[roomName]");
-    console.log(roomsData[roomName]);
-    console.log("socketName");
-    console.log(socketName);
     const toBeDeletedIndex = roomsData[roomName].findIndex(
       (s) => s === socketName
     );
@@ -29,6 +25,6 @@ export default function leaveRoomHandler(io, socket, data) {
       votesData,
     });
 
-    console.log("disconnectButtonAction data clear was successful");
+    console.log("DisconnectButtonAction data clear was successful");
   });
 }

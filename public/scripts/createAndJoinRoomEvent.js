@@ -16,21 +16,18 @@ export function createAndJoinRoomEvent(
     if (socketName.value) {
       socket.emit("socketCreateRoom", socketName.value, (response) => {
         if (response === "error") {
-          console.log("error hehe");
+          // This block is intentionally left empty
         } else {
           changePage("page2");
-          console.log(response); // "got it"
           roomCode.textContent = "RoomID: " + response;
         }
       });
-      console.log(socketName.value);
       socketName.value = "";
     }
   });
 
   joinRoom.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log(roomId.value);
     if (roomId.value && socketName.value) {
       socket.emit(
         "joinRoomButtonAction",

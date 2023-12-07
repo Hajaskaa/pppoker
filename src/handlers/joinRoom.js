@@ -10,8 +10,6 @@ export default function joinRoomHandler(io, socket, data) {
 
       roomsData[currentRoomName].push(socketName);
       votesData[currentRoomName].push("0");
-      console.log("roomsData[currentRoomName]");
-      console.log(roomsData[currentRoomName]);
 
       io.to(currentRoomName).emit(
         "newSocketInRoom",
