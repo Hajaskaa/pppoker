@@ -3,6 +3,7 @@ import { voteSocketEvent } from "./voteSocketEvent.js";
 import { copyRoomIdEvent } from "./util.js";
 import { showVotesEvent } from "./showVotesEvent.js";
 import { leaveRoomEvent } from "./leaveRoomEvent.js";
+import setDefaultPage from "./setDefaultPage.js";
 
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -12,6 +13,7 @@ import { leaveRoomEvent } from "./leaveRoomEvent.js";
 //dinamyc binding - no getelement needed
 
 const socket = io();
+setDefaultPage(socket);
 
 createAndJoinRoomEvent(
   socket,

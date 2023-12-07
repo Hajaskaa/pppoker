@@ -32,6 +32,7 @@ const votesData = {};
 const roomCatalog = {};
 
 io.on("connection", async (socket) => {
+  io.to(socket.id).emit("setDefaultPage");
   console.log(socket.id + " joined the server.");
   const sharedData = {
     socketId: socket.id,
