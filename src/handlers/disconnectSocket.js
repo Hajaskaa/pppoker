@@ -45,8 +45,8 @@ export default function disconnectSocketHandler(io, socket, data) {
         console.log(
           "Room still active, remaining sockets: " + roomCatalog[roomName]
         );
-        io.to(roomName).emit("newSocketInRoom", roomsData[roomName]);
-        io.to(roomName).emit("showVotesFromServer", votesData[roomName]);
+        io.to(roomName).emit("updatePlayerList", roomsData[roomName]);
+        io.to(roomName).emit("updateVoteList", votesData[roomName]);
       }
 
       console.log("Socket disconnect data clear successful");

@@ -9,8 +9,8 @@ export function showVotesEvent(
     socket.emit("showVotesButtonAction", () => {});
   });
 
-  socket.on("updateVoteList", (e) => {
-    let votes = e;
+  socket.on("updateVoteList", (votesData) => {
+    let votes = votesData;
 
     let child2 = socketsInTheRoomVoteNumbersElement.lastElementChild;
     while (child2) {
@@ -24,7 +24,9 @@ export function showVotesEvent(
       window.scrollTo(0, document.body.scrollHeight);
     }
 
-    votes = votes.filter((word) => word !== "💀");
+    votes = votes
+      .filter((word) => word !== "💀")
+      .filter((word) => word !== "0");
     if (votes.length) {
       let numbers = votes.map(Number);
       let sum = numbers.reduce((acc, num) => acc + num, 0);

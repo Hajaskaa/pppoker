@@ -1,5 +1,5 @@
 export default function joinRoomHandler(io, socket, data) {
-  const { socketId, roomsData, votesData, roomCatalog } = data;
+  const { socketId, roomsData, votesData, roomCatalog, roomState } = data;
   socket.on("joinRoomButtonAction", (arg, callback) => {
     const currentRoomName = arg.roomId; //maybe we should switch to socket.rooms[1] --> we can't its not in it yet
     const socketName = arg.socketName; //maybe we should get it from the Map/Set
@@ -16,7 +16,8 @@ export default function joinRoomHandler(io, socket, data) {
 
       io.to(currentRoomName).emit(
         "updatePlayerList",
-        roomsData[currentRoomName]
+        roomsData[currentRoomName],
+        roomState
       );
 
       callback(currentRoomName);

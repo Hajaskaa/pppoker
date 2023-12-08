@@ -31,6 +31,7 @@ const roomsData = {};
 const votesData = {};
 
 const roomCatalog = {};
+const roomState = {};
 
 io.on("connection", async (socket) => {
   io.to(socket.id).emit("setDefaultPage");
@@ -41,6 +42,7 @@ io.on("connection", async (socket) => {
     roomsData: roomsData,
     votesData: votesData,
     roomCatalog,
+    roomState,
   };
 
   createRoomHandler(io, socket, sharedData);
