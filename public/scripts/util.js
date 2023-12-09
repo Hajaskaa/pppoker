@@ -90,10 +90,10 @@ export function updateMainGameArea(
       socketsInTheRoomVoteNumbersElement.removeChild(child2);
       child2 = socketsInTheRoomVoteNumbersElement.lastElementChild;
     }
-    for (let socketName of socketNamesInRoom) {
+    for (let socketVote of votesInRoom) {
       const item = document.createElement("li");
-      console.log(socketName);
-      item.textContent = "?";
+      if (socketVote === "0") item.textContent = "?";
+      else item.textContent = "✔";
       socketsInTheRoomVoteNumbersElement.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
     }
