@@ -5,6 +5,7 @@ export default function leaveRoomHandler(io, socket, data) {
     roomsData,
     votesData,
     roomCatalog,
+    roomState,
   } = data;
   socket.on("disconnectButtonAction", (arg, callback) => {
     const roomName = Array.from(socket.rooms)[1];
@@ -23,8 +24,13 @@ export default function leaveRoomHandler(io, socket, data) {
       delete votesData[roomName];
     }
 
-    io.to(roomName).emit("updatePlayerAndVoteList", roomsData[roomName]);
-    io.to(roomName).emit("updateVoteList", votesData[roomName]);
+    io.to(roomName).emit(
+      "updatePlayerAndVoteList",
+      roomsData[roomName],
+      votesData[roomName],
+      roomState[roomName]
+    );
+    // io.to(roomName).emit("updateVoteList", votesData[roomName]);
     callback({
       toBeDeletedIndex,
       roomsData,
