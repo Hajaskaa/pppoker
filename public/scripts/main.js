@@ -35,7 +35,13 @@ createAndJoinRoomEvent(
   averageElement
 );
 
-voteSocketEvent(socket, voteFormElement);
+voteSocketEvent(
+  socket,
+  voteFormElement,
+  socketsInTheRoomElement,
+  socketsInTheRoomVoteNumbersElement,
+  averageElement
+);
 
 showVotesEvent(
   socket,

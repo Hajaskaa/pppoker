@@ -9,12 +9,28 @@ export default function leaveRoomHandler(io, socket, data) {
   } = data;
   socket.on("disconnectButtonAction", (arg, callback) => {
     const roomName = Array.from(socket.rooms)[1];
-    const toBeDeletedIndex = roomCatalog[roomName].findIndex(
-      (s) => s === socketId
-    );
-    roomsData[roomName].splice(toBeDeletedIndex, 1);
-    roomCatalog[roomName].splice(toBeDeletedIndex, 1);
-    votesData[roomName].splice(toBeDeletedIndex, 1);
+    if (roomName) {
+      const toBeDeletedIndex = roomCatalog[roomName].findIndex(
+        (s) => s === socketId
+      );
+      roomsData[roomName].splice(toBeDeletedIndex, 1);
+      roomCatalog[roomName].splice(toBeDeletedIndex, 1);
+      votesData[roomName].splice(toBeDeletedIndex, 1);
+    } else {
+      console.log("Critical error with findIndex");
+      console.log(
+        "socketId,socketNamesAndSocketIDs,roomsData,votesData,roomCatalog,roomState"
+      );
+      console.log(
+        socketId,
+        socketNamesAndSocketIDs,
+        roomsData,
+        votesData,
+        roomCatalog,
+        roomState
+      );
+    }
+
     socketNamesAndSocketIDs.delete(socket.id);
     socket.leave(roomName);
 
@@ -32,7 +48,6 @@ export default function leaveRoomHandler(io, socket, data) {
     );
     // io.to(roomName).emit("updateVoteList", votesData[roomName]);
     callback({
-      toBeDeletedIndex,
       roomsData,
       votesData,
     });
