@@ -15,7 +15,7 @@ import nextRoundEvent from "./nextRoundEvent.js";
 
 const socket = io();
 setDefaultPage(socket);
-nextRoundEvent(socket, nextRoundButton);
+nextRoundEvent(socket, nextRoundButton, socketsInTheRoomVoteNumbersElement);
 
 createAndJoinRoomEvent(
   socket,
