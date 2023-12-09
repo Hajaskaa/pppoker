@@ -1,10 +1,15 @@
 export default function showVotesHandler(io, socket, data) {
-  const { votesData, roomState } = data;
+  const { roomsData, votesData, roomState } = data;
   socket.on("showVotesButtonAction", (callback) => {
-    const currentRoomName = Array.from(socket.rooms)[1];
-    roomState[currentRoomName] = true;
-    io.to(currentRoomName).emit("updateVoteList", votesData[currentRoomName]);
+    const roomName = Array.from(socket.rooms)[1];
+    roomState[roomName] = true;
+    io.to(roomName).emit(
+      "updatePlayerAndVoteList",
+      roomsData[roomName],
+      votesData[roomName],
+      roomState[roomName]
+    );
 
-    callback(votesData[currentRoomName]);
+    callback(votesData[roomName]);
   });
 }

@@ -74,4 +74,26 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap-reverse;
+}
+
+#roomCodeWrapper p {
+  display: inline-block;
+}
+
+.voteBtn:hover {
+  transition: transform 0.2s ease;
+  transform: translateY(
+    -2px
+  ); /* Adjust the value to control the amount of upward movement */
+}
+
+@media screen and (max-width: 420px) {
+  .btn {
+    margin: 2px;
+  }
+
+  #roomCodeWrapper p {
+    padding: 0;
+  }
 }

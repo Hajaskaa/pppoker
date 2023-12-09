@@ -1,4 +1,4 @@
-import { changePage } from "./util.js";
+import { changePage, updateMainGameArea } from "./util.js";
 
 export function createAndJoinRoomEvent(
   socket,
@@ -8,7 +8,8 @@ export function createAndJoinRoomEvent(
   socketsInTheRoomElement,
   socketsInTheRoomVoteNumbersElement,
   joinRoom,
-  roomId
+  roomId,
+  averageElement
 ) {
   createRoom.addEventListener("click", (e) => {
     e.preventDefault();
@@ -44,31 +45,14 @@ export function createAndJoinRoomEvent(
     }
   });
 
-  socket.on("updatePlayerList", (arg) => {
-    let child = socketsInTheRoomElement.lastElementChild;
-    while (child) {
-      socketsInTheRoomElement.removeChild(child);
-      child = socketsInTheRoomElement.lastElementChild;
-    }
-    const socketNamesInRoom = arg;
-    for (let socketName of socketNamesInRoom) {
-      const item = document.createElement("li");
-      item.textContent = socketName;
-      socketsInTheRoomElement.appendChild(item);
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    let child2 = socketsInTheRoomVoteNumbersElement.lastElementChild;
-    while (child2) {
-      socketsInTheRoomVoteNumbersElement.removeChild(child2);
-      child2 = socketsInTheRoomVoteNumbersElement.lastElementChild;
-    }
-    for (let socketName of socketNamesInRoom) {
-      const item = document.createElement("li");
-      console.log(socketName);
-      item.textContent = "?";
-      socketsInTheRoomVoteNumbersElement.appendChild(item);
-      window.scrollTo(0, document.body.scrollHeight);
-    }
+  socket.on("updatePlayerAndVoteList", (names, votes, state) => {
+    updateMainGameArea(
+      socketsInTheRoomElement,
+      socketsInTheRoomVoteNumbersElement,
+      averageElement,
+      names,
+      votes,
+      state
+    );
   });
 }

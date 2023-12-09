@@ -1,14 +1,16 @@
 export default function nextRoundHandler(io, socket, data) {
-  const { votesData, roomState } = data;
+  const { roomsData, votesData, roomState } = data;
   socket.on("nextRoundEvent", (callback) => {
-    const currentRoomName = Array.from(socket.rooms)[1];
-    roomState[currentRoomName] = false;
-    io.to(currentRoomName).emit(
+    const roomName = Array.from(socket.rooms)[1];
+    roomState[roomName] = false;
+    votesData[roomName].fill("0");
+    io.to(roomName).emit(
       "nextRoundEventHandled",
-      votesData[currentRoomName],
-      roomState[currentRoomName]
+      roomsData[roomName],
+      votesData[roomName],
+      roomState[roomName]
     );
 
-    callback(votesData[currentRoomName]);
+    callback(votesData[roomName]);
   });
 }

@@ -7,6 +7,7 @@ export default function disconnectSocketHandler(io, socket, data) {
     roomsData,
     votesData,
     roomCatalog,
+    roomState,
   } = data;
 
   socket.on("disconnect", () => {
@@ -19,12 +20,27 @@ export default function disconnectSocketHandler(io, socket, data) {
       let roomName = findStringInObjectOfArrays(roomCatalog, searchString);
       console.log("roomName: " + roomName);
       if (roomName) {
-        const toBeDeletedIndex = roomCatalog[roomName].findIndex(
-          (s) => s === socketId
-        );
-        roomCatalog[roomName].splice(toBeDeletedIndex, 1);
-        roomsData[roomName].splice(toBeDeletedIndex, 1);
-        votesData[roomName].splice(toBeDeletedIndex, 1);
+        if (roomCatalog[roomName]) {
+          const toBeDeletedIndex = roomCatalog[roomName].findIndex(
+            (s) => s === socketId
+          );
+          roomCatalog[roomName].splice(toBeDeletedIndex, 1);
+          roomsData[roomName].splice(toBeDeletedIndex, 1);
+          votesData[roomName].splice(toBeDeletedIndex, 1);
+        } else {
+          console.log("Critical error with findIndex");
+          console.log(
+            "socketId,socketNamesAndSocketIDs,roomsData,votesData,roomCatalog,roomState"
+          );
+          console.log(
+            socketId,
+            socketNamesAndSocketIDs,
+            roomsData,
+            votesData,
+            roomCatalog,
+            roomState
+          );
+        }
 
         console.log(
           `Found "${searchString}" in the array with property name "${roomName} and it has been deleted from all records".`
@@ -45,8 +61,12 @@ export default function disconnectSocketHandler(io, socket, data) {
         console.log(
           "Room still active, remaining sockets: " + roomCatalog[roomName]
         );
-        io.to(roomName).emit("updatePlayerList", roomsData[roomName]);
-        io.to(roomName).emit("updateVoteList", votesData[roomName]);
+        io.to(roomName).emit(
+          "updatePlayerAndVoteList",
+          roomsData[roomName],
+          votesData[roomName],
+          roomState[roomName]
+        );
       }
 
       console.log("Socket disconnect data clear successful");

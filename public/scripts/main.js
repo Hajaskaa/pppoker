@@ -15,7 +15,13 @@ import nextRoundEvent from "./nextRoundEvent.js";
 
 const socket = io();
 setDefaultPage(socket);
-nextRoundEvent(socket, nextRoundButton);
+nextRoundEvent(
+  socket,
+  nextRoundButton,
+  socketsInTheRoomElement,
+  socketsInTheRoomVoteNumbersElement,
+  averageElement
+);
 
 createAndJoinRoomEvent(
   socket,
@@ -25,14 +31,22 @@ createAndJoinRoomEvent(
   socketsInTheRoomElement,
   socketsInTheRoomVoteNumbersElement,
   joinRoomElement,
-  roomIdElement
+  roomIdElement,
+  averageElement
 );
 
-voteSocketEvent(socket, voteFormElement);
+voteSocketEvent(
+  socket,
+  voteFormElement,
+  socketsInTheRoomElement,
+  socketsInTheRoomVoteNumbersElement,
+  averageElement
+);
 
 showVotesEvent(
   socket,
   showVotesButton,
+  socketsInTheRoomElement,
   socketsInTheRoomVoteNumbersElement,
   averageElement
 );

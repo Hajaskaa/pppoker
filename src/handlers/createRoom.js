@@ -1,22 +1,33 @@
 export default function createRoomHandler(io, socket, data) {
+  const {
+    socketId,
+    socketNamesAndSocketIDs,
+    roomCatalog,
+    roomsData,
+    votesData,
+    roomState,
+  } = data;
   socket.on("socketCreateRoom", (arg, callback) => {
     if (arg) {
-      const socketName = arg;
-      data.socketNamesAndSocketIDs.set(socket.id, socketName);
-      const currentRoomName = "room" + socket.id;
-      socket.join(currentRoomName);
-      data.roomsData[currentRoomName] = [socketName];
-      data.votesData[currentRoomName] = ["0"];
+      let socketName = arg.trim();
+      if (socketName.length > 20) socketName = socketName.slice(0, 20);
+      socketNamesAndSocketIDs.set(socket.id, socketName);
+      const roomName = "room" + socket.id;
+      socket.join(roomName);
+      roomsData[roomName] = [socketName];
+      votesData[roomName] = ["0"];
+      //check if theres room in input for added security
+      roomCatalog[roomName] = [socketId];
+      roomState[roomName] = false;
 
-      data.roomCatalog[currentRoomName] = [data.socketId];
-      data.roomState[currentRoomName] = false;
-
-      io.to(currentRoomName).emit(
-        "updatePlayerList",
-        data.roomsData[currentRoomName]
+      io.to(roomName).emit(
+        "updatePlayerAndVoteList",
+        roomsData[roomName],
+        votesData[roomName],
+        roomState[roomName]
       );
 
-      callback(currentRoomName);
+      callback(roomName);
     } else {
       callback("error");
     }
