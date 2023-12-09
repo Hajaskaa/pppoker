@@ -2,7 +2,8 @@ export default function joinRoomHandler(io, socket, data) {
   const { socketId, roomsData, votesData, roomCatalog, roomState } = data;
   socket.on("joinRoomButtonAction", (arg, callback) => {
     const roomName = arg.roomId; //maybe we should switch to socket.rooms[1] --> we can't its not in it yet
-    const socketName = arg.socketName; //maybe we should get it from the Map/Set
+    let socketName = arg.socketName.trim(); //maybe we should get it from the Map/Set
+    if (socketName.length > 20) socketName = socketName.slice(0, 20);
     if (roomName in roomsData) {
       console.log(
         "Room name has been found, " + socketId + " joined " + roomName
