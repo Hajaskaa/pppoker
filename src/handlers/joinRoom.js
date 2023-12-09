@@ -15,7 +15,7 @@ export default function joinRoomHandler(io, socket, data) {
       roomCatalog[currentRoomName].push(socketId);
 
       io.to(currentRoomName).emit(
-        "updatePlayerList",
+        "updatePlayerAndVoteList",
         roomsData[currentRoomName],
         roomState
       );

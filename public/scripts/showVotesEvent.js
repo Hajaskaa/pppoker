@@ -24,6 +24,7 @@ export function showVotesEvent(
       window.scrollTo(0, document.body.scrollHeight);
     }
 
+    //AVERAGE
     votes = votes
       .filter((word) => word !== "💀")
       .filter((word) => word !== "0");

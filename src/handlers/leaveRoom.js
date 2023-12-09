@@ -23,7 +23,7 @@ export default function leaveRoomHandler(io, socket, data) {
       delete votesData[roomName];
     }
 
-    io.to(roomName).emit("updatePlayerList", roomsData[roomName]);
+    io.to(roomName).emit("updatePlayerAndVoteList", roomsData[roomName]);
     io.to(roomName).emit("updateVoteList", votesData[roomName]);
     callback({
       toBeDeletedIndex,
